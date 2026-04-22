@@ -1,0 +1,126 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# cf. tool.setuptools.package-dir section below
+name = "{{ cookiecutter.package_slug }}"
+description = "{{ cookiecutter.project_description }}"
+version = "0.0.0"
+# cf. https://www.bitecode.dev/p/relieving-your-python-packaging-pain,
+# https://devguide.python.org/versions/
+requires-python = ">=3.12"
+# cf. https://pypi.org/classifiers/
+classifiers = [
+    "Private :: Do Not Upload",
+    "Development Status :: 1 - Planning",
+]
+# To avoid unnecessary developer overhead, only set version
+# constraints to address capability, compatibility, or security
+# issues, and avoid pinning specific versions if possible.
+dependencies = [
+    "structlog",
+]
+
+[project.optional-dependencies]
+dev = [
+    "autopep8",
+    "black",
+    "build",
+    "commitizen",
+    "id",
+    "ipdb",
+    "isort",
+    "jedi",
+    "matplotlib",
+    # https://github.com/executablebooks/mdit-py-plugins/pull/65
+    "mdit-py-plugins>0.3.4",
+    "myst-parser[linkify,rtd]",
+    "pip-tools",
+    "pre-commit",
+    "pystemmer",
+    "rinohtype",
+    "sphinxcontrib-bibtex",
+    "sphinxcontrib-svg2pdfconverter[CairoSVG]",
+    "sphinx-autodoc2[cli]",
+    "sphinx-book-theme",
+    "sphinx-intl",
+    "sphobjinv",
+    "twine",
+    "yapf",
+    "yq",
+    # Keep the list of flake8 plugins in sync with
+    # .pre-commit-config.yaml.
+    "dlint",
+    "flake8-bandit",
+    "flake8-bugbear",
+    "flake8-comprehensions",
+    "flake8-docstrings",
+    "flake8-eradicate",
+    "flake8-fixme",
+    "flake8-future-import",
+    "flake8-pytest-style",
+    "flake8-requirements",
+]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-emoji",
+    "pytest-md",
+    "pytest-order",
+    "pytest-reportlog",
+    "pytest-selenium",
+    "selenium",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[tool.commitizen]
+bump_message = "bump: release version $new_version"
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver2"
+version_provider = "pep621"
+update_changelog_on_bump = true
+
+[tool.commitizen.change_type_map]
+build = "Build System"
+chore = "Miscellaneous"
+ci = "CI/CD Workflow"
+docs = "Documentation"
+feat = "New Features"
+fix = "Bug Fixes"
+perf = "Performance Improvements"
+refactor = "Refactoring"
+style = "Style"
+test = "Testing"
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+
+[tool.pytest.ini_options]
+addopts = [
+    # Recommended for new projects;
+    # cf. https://docs.pytest.org/en/latest/explanation/goodpractices.html#choosing-an-import-mode.
+    "--import-mode=importlib",
+    # Ignore directories containing build artifacts;
+    # cf. https://stackoverflow.com/a/64669513.
+    "--ignore-glob=build*",
+    "--ignore-glob=dist*",
+    # Enable color-coded syntax highlighting, tab completion, and an
+    # expanded code view in pytest's post-mortem debug mode.
+    "--pdbcls=IPython.terminal.debugger:TerminalPdb",
+]
+# Invoke smoke tests with `pytest -k smoke` or `pytest -m "smoke and
+# not slow"`.  See also https://docs.pytest.org/en/stable/mark.html,
+# https://stackoverflow.com/a/52369721.
+markers = [
+    "slow",
+    "smoke",
+]
+
+[tool.setuptools.package-dir]
+{{ cookiecutter.project_slug }} = "src/{{ cookiecutter.project_slug }}"

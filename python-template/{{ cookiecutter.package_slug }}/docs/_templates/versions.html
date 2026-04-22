@@ -1,0 +1,28 @@
+{%- if current_version %}
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    Version: {{ current_version }} ({{ current_language }})
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    {%- if versions[current_version]|length >= 1 %}
+    <dl>
+      <dt>{{ _('Languages') }}</dt>
+      {%- for l in versions[current_version]|sort %}
+      <dd><a href="../{{ l }}/index.html">{{ l }}</a></dd>
+      {%- endfor %}
+    </dl>
+    {%- endif %}
+    {%- if versions|length >= 1 %}
+    <dl>
+      <dt>{{ _('Versions') }}</dt>
+      {%- for v, ls in versions|items %}
+      <dd><a href="../../{{ v }}/{{ ls[0] }}/index.html">{{ v }}</a></dd>
+      {%- endfor %}
+    </dl>
+    {%- endif %}
+    <br>
+    </dl>
+  </div>
+</div>
+{%- endif %}

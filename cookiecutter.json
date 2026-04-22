@@ -1,0 +1,9 @@
+{
+    "templates": {
+        "python-template": {
+            "path": "python-template",
+            "title": "Python",
+            "description": "A bare-bones Python distribution with documentation and test stubs"
+        }
+    }
+}
