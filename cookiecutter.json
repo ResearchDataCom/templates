@@ -1,9 +1,14 @@
 {
     "templates": {
+        "basic-template": {
+            "path": "basic-template",
+            "title": "Basic",
+            "description": "A minimalist collection of versioned files"
+        },
         "python-template": {
             "path": "python-template",
             "title": "Python",
-            "description": "A bare-bones Python distribution with documentation and test stubs"
+            "description": "A Python distribution that includes documentation and tests"
         }
     }
 }
