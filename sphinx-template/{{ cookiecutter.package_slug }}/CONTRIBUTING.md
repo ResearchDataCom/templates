@@ -10,14 +10,13 @@ Changes must be self-contained.  Please rebase changes on the latest
 HEAD of the main branch before submitting them for review as a
 [GitHub pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests).
 
-> [!NOTE]
+> [!TIP]
 >
-> Cookiecutter templates can import files from another template using
-> symbolic links.  Contributors and reviewers **MUST** check for these
-> references manually and update them accordingly.  Symbolic links
-> **MUST** be relative to the destination.
+> Because this is a documentation project, only use the `docs` commit
+> type when making changes to project meta-documentation such as this.
+> Use the `feat`, `fix`, `refactor`, and `style` commit types to
+> describe content edits appropriately.
 
-A commit's scope **SHOULD** be the top-level directory name, i.e., the
-template name.  Changes covering multiple scopes or changes not
-specific to one scope **MUST NOT** specify a scope, e.g., the
-top-level cookiecutter configuration.
+No commit scopes are currently in use.
+
+### [Refer to the detailed contribution guidelines for more information.]({{ cookiecutter.docs_url }}/)

@@ -86,16 +86,17 @@ $(if $(call pathsearch,$(PATH),chromedriver),Chrome, \
 $(if $(call pathsearch,$(PATH),geckodriver),Firefox, \
 ))
 
-# Get the package name.
-PYPACKAGE_NAME = \
-$(shell $(TOMLQ) -r '.tool.setuptools."package-dir"|keys[0]' pyproject.toml)
+# Get the Python egg name.  This kludge assumes package names are
+# always in kebab-case, but the Right Way requires understanding of
+# pip's or setuptools' internals.
+EGG_NAME = $(shell $(TOMLQ) -r '.project.name|split("-")|join("_")' pyproject.toml)
 
 # Set the Flask app module name, optionally from an environment
 # variable.  The default value injects a minimal test configuration to
 # make the CLI work, bypassing config.py if it exists in the current
 # working directory.  Be mindful of the different levels of string
 # escaping that might be required when setting this.
-FLASK_APP ?= '$(PYPACKAGE_NAME).app:create_app({"SERVER_NAME":"localhost"})'
+FLASK_APP ?= '$(EGG_NAME).app:create_app({"SERVER_NAME":"localhost"})'
 
 # Recursively list code, content, and test articles (as well as
 # related work in progress).
@@ -190,14 +191,14 @@ venv .venv:
 	touch .venv
 
 # Set up the development environment.
-setup $(PYPACKAGE_NAME).egg-info: pyproject.toml .venv
+setup $(EGG_NAME).egg-info: pyproject.toml .venv
 	. .venv/bin/activate; python -m pip install -e .[dev,test]
-	touch $(PYPACKAGE_NAME).egg-info
+	touch $(EGG_NAME).egg-info
 	-rm -f .egg-info
 
 # Install the pre-commit hooks.
 pre-commit: $(PRE_COMMIT_HOOKS)
-.git/hooks/%: .pre-commit-config.yaml $(PYPACKAGE_NAME).egg-info
+.git/hooks/%: .pre-commit-config.yaml $(EGG_NAME).egg-info
 	$(PRE_COMMIT) validate-config
 	$(PRE_COMMIT) validate-manifest
 	$(PRE_COMMIT) install --install-hooks --hook-type $*
@@ -207,17 +208,17 @@ lint: $(PRE_COMMIT_HOOKS)
 	$(PRE_COMMIT) run --show-diff-on-failure --all-files
 
 # Perform comprehensive functional and integration testing.
-test tests coverage .coverage: $(PYPACKAGE_NAME).egg-info $(SOURCEISH) $(UNTRACKED)
-	$(PYTEST) --cov=$(PYPACKAGE_NAME) --cov-report html:cov_html \
+test tests coverage .coverage: $(EGG_NAME).egg-info $(SOURCEISH) $(UNTRACKED)
+	$(PYTEST) --cov=$(EGG_NAME) --cov-report html:cov_html \
 		$(if $(WEBDRIVER),--driver $(WEBDRIVER)) $(PYTEST_ARGS)
 
 # Run a shorter, faster subset of the test suite.
-smoke: $(PYPACKAGE_NAME).egg-info
+smoke: $(EGG_NAME).egg-info
 	$(PYTEST) -m "smoke and not slow" \
 		$(if $(WEBDRIVER),--driver $(WEBDRIVER)) $(PYTEST_ARGS)
 
 # Provide a generic Flask CLI wrapper.
-flask: | $(PYPACKAGE_NAME).egg-info
+flask: | $(EGG_NAME).egg-info
 	$(FLASK) -A $(FLASK_APP) $(FLASK_ARGS)
 
 # Automatically generate a new database schema revision.
@@ -242,16 +243,16 @@ autogenerate-revision:
 	rm -rf $(TMP)
 
 # Route these targets to Sphinx using its "make mode" option.
-gettext html: | $(PYPACKAGE_NAME).egg-info
+gettext html: | $(EGG_NAME).egg-info
 	$(SPHINXBUILD) -M $@ docs build $(SPHINXOPTS) $(O)
 
 # Prepare or update message catalogs for translation.
 locale locales: $(addprefix docs/_locales/, $(TRANSLATIONS))
-docs/_locales/%: gettext | $(PYPACKAGE_NAME).egg-info
+docs/_locales/%: gettext | $(EGG_NAME).egg-info
 	$(SPHINXINTL) -c docs/conf.py update -p build -l $*
 
 # Build the documentation.
-docs: | $(PYPACKAGE_NAME).egg-info
+docs: | $(EGG_NAME).egg-info
 # Create missing remote-tracking branches.
 	LOCAL_BRANCHES=$$(git branch \
 		| grep -E -v '^..(HEAD|gh-pages|main|master|releases?(/.*)?)$$' \
@@ -312,7 +313,7 @@ docsclean:
 	rm -rf docs/apidocs build/{docs,gettext,html} build/versions*
 
 # Build the distribution.
-dist: | $(PYPACKAGE_NAME).egg-info
+dist: | $(EGG_NAME).egg-info
 	. .venv/bin/activate; python -m build
 	$(TWINE) check dist/*
 

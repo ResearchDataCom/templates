@@ -1,0 +1,52 @@
+---
+name: Continuous Integration
+
+# Trigger this workflow manually, by pushing commits to any branch, or
+# by filing a pull request.
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+permissions: read-all
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ResearchDataCom/releng/pre-commit@c983346f5a95a52fe5adc01e6bba7708f7286e30 # v2.1.1
+        with:
+          access-app-id: ${{ vars.PRIVATE_REPOSITORY_ACCESS_APP_ID }}
+          access-key: ${{ secrets.PRIVATE_REPOSITORY_ACCESS_KEY }}
+
+  release:
+    # Prevent race conditions of more than one release job in case of
+    # multiple pushes to the main branch in a short period of time.
+    concurrency:
+      group: ${{ github.workflow }}-release-${{ github.ref_name }}
+      cancel-in-progress: false
+    needs:
+      - lint
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - id: release
+        uses: ResearchDataCom/releng/cz-bump@c983346f5a95a52fe5adc01e6bba7708f7286e30 # v2.1.1
+    outputs:
+      released: ${{ steps.release.outputs.released }}
+      tag: ${{ steps.release.outputs.tag }}
+
+  github:
+    needs:
+      - release
+    if: needs.release.outputs.released
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ResearchDataCom/releng/publish-github@c983346f5a95a52fe5adc01e6bba7708f7286e30 # v2.1.1
+        with:
+          artifact-paths: ""
+          tag: ${{ needs.release.outputs.tag }}

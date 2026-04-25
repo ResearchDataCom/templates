@@ -1,0 +1,1 @@
+../../../../python-template/{{ cookiecutter.package_slug }}/docs/_static/favicon-32x32.png

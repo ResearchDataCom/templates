@@ -9,6 +9,11 @@
             "path": "python-template",
             "title": "Python",
             "description": "A Python distribution that includes documentation and tests"
+        },
+        "sphinx-template": {
+            "path": "sphinx-template",
+            "title": "Sphinx",
+            "description": "Versioned documentation generated using Sphinx"
         }
     }
 }

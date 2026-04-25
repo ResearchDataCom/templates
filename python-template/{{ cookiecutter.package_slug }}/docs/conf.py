@@ -2,34 +2,23 @@
 
 import json
 import os
-import sys
-from importlib.machinery import SourceFileLoader
+import tomllib
 from pathlib import Path
 
 import sphinx_book_theme
 
-# Enable builds from outside the docs directory.
-_srcpath = (Path(__file__).parent / ".." / "src").absolute()
-sys.path.insert(0, str(_srcpath))
+__metadata__ = tomllib.load(
+    (Path(__file__).parent / ".." / "pyproject.toml").open("rb")
+)
+"""Configure Sphinx from dynamically loaded project metadata."""
 
-# Purge old imports just in case.
-_removals = [_mod for _mod in sys.modules if "{{ cookiecutter.project_slug }}" in _mod]
-for _mod in _removals:
-    del sys.modules[_mod]
-
-# Configure Sphinx from dynamically loaded project metadata.
-_metadata = SourceFileLoader(
-    "{{ cookiecutter.project_slug }}",
-    str(_srcpath / "{{ cookiecutter.project_slug }}" / "__init__.py"),
-).load_module()
-
-project = _metadata.__app_name__
+project = __metadata__["project"]["name"]
 """The project name."""
 
-release = _metadata.__version__
+release = __metadata__["project"]["version"]
 """The full version number, including the patch level (X.Y.Z)."""
 
-version = ".".join(_metadata.__version__.split(".")[0:2])
+version = ".".join(release.split(".")[0:2])
 """The short version number (X.Y)."""
 
 author = "{{ cookiecutter.author }}"
