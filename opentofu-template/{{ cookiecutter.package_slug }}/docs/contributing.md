@@ -10,8 +10,8 @@ submitting them for review as a
 
 ## Development Environment
 
-This project requires Python 3.11 or newer.  To set up your
-development environment on Linux or macOS, run these
+This project requires Python 3.12 and OpenTofu 1.10 or newer.  To set
+up your development environment on Linux or macOS, run these
 [GNU Make](https://www.gnu.org/software/make/) commands from the
 project root directory.
 
@@ -78,7 +78,11 @@ _Conventional Commits_, a commit scope is an **OPTIONAL**
 abbreviation, acronym, codename, or keyword that provides additional
 context to reviewers by naming the essential component of the change.
 
-No commit scopes are currently in use.
+For OpenTofu resource definition changes, the commit scope **SHOULD**
+specify OpenTofu submodule containing the code instigating the change.
+Changes covering multiple scopes or changes not specific to one scope
+**MUST NOT** specify a scope, including changes instigated by code in
+top-level resource definitions like `main.tf`.
 
 ### Commit Types
 
@@ -102,15 +106,6 @@ No commit scopes are currently in use.
 : a documentation-only change, including edits to in-line
   documentation and comments
 
-:::{hint}
-
-Because this is a documentation project, only use the `docs` commit
-type when making changes to project meta-documentation such as
-`README.md`.  Use the `feat`, `fix`, `refactor`, and `style` commit
-types to describe content edits.
-
-:::
-
 {.glossary}
 `feat`
 : new content
@@ -121,6 +116,10 @@ types to describe content edits.
   factual error
 
 {.glossary}
+`perf`
+: a code change that improves performance
+
+{.glossary}
 `refactor`
 : an edit that neither makes corrections nor adds content
 
@@ -128,3 +127,7 @@ types to describe content edits.
 `style`
 : an edit that only affects formatting, or a change related to the
   linter configuration
+
+{.glossary}
+`test`
+: a new test or a correction to an existing test
