@@ -1,3 +1,10 @@
+## v1.3.1 (2026-04-28)
+
+### Bug Fixes
+
+- **opentofu-template**: synchronize commit message guidance with the top-level summary
+- **opentofu-template**: remove autodoc2 references to non-existent directories
+
 ## v1.3.0 (2026-04-28)
 
 ### New Features
