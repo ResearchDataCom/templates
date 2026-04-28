@@ -1,3 +1,9 @@
+## v1.3.0 (2026-04-28)
+
+### New Features
+
+- **opentofu-template**: define an OpenTofu module with documentation and related placeholders
+
 ## v1.2.0 (2026-04-25)
 
 ### New Features
