@@ -1,0 +1,97 @@
+# Ignore temporary files/folders, but note that this doesn't always
+# work.  Check each linter's documentation for any required
+# tool-specific exclusions; cf. https://stackoverflow.com/a/75560858.
+exclude: |-
+  (?x)^(
+      .external_modules.*|
+      .terraform.*|
+      .venv.*|
+      build.*|
+      dist.*
+  )$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  # Ensure commit messages use Conventional Commits formatting;
+  # cf. pyproject.toml.
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.13.9
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  # Check shell scripts, limiting output to errors and warnings.
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.11.0
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+
+  # Check GitHub Actions workflows.
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.11
+    hooks:
+      - id: actionlint
+
+  # Check third-party actions' pins.
+  - repo: local
+    hooks:
+      - id: pinact
+        name: Third-party actions
+        language: unsupported
+        entry: pinact run -u --min-age 7
+        pass_filenames: false
+
+  # Check Python syntax/style.
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          # Keep the list of flake8 plugins in sync with
+          # pyproject.toml.
+          - dlint
+          - flake8-bandit
+          - flake8-bugbear
+          - flake8-comprehensions
+          - flake8-docstrings
+          - flake8-eradicate
+          - flake8-fixme
+          - flake8-future-import
+          - flake8-pytest-style
+          - flake8-requirements
+
+  # Sort Python imports.
+  - repo: https://github.com/pycqa/isort
+    rev: 8.0.1
+    hooks:
+      - id: isort
+
+  # Reformat Python code after sorting imports.
+  - repo: https://github.com/psf/black
+    rev: 26.3.1
+    hooks:
+      - id: black
+
+  # Lint/reformat the OpenTofu module.
+  - repo: https://github.com/tofuutils/pre-commit-opentofu
+    rev: v2.2.2
+    hooks:
+      - id: tofu_validate
+      - id: tofu_fmt
+      - id: tofu_tflint
+      - id: tofu_trivy
+        args:
+          - --args=--skip-dirs .external_modules
+          - --args=--skip-dirs .terraform
+          - --args=--skip-dirs .venv
+          - --args=--skip-dirs build
+          - --args=--skip-dirs builds
+          - --args=--skip-dirs dist
+          - --args=--skip-dirs dist-lambda

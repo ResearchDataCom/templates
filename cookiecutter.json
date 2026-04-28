@@ -5,6 +5,11 @@
             "title": "Basic",
             "description": "A minimalist collection of versioned files"
         },
+        "opentofu-template": {
+            "path": "opentofu-template",
+            "title": "OpenTofu",
+            "description": "An OpenTofu module with documentation and placeholders for examples, submodules, templates, and tests"
+        },
         "python-template": {
             "path": "python-template",
             "title": "Python",

@@ -1,0 +1,17 @@
+{
+    "project_slug": "opentofu_template",
+    "project_description": "Succinctly explain what this does.",
+    "author": "Research Data and Communication Technologies Benefit Corp.",
+    "docs_base_url": "https://docs.rdctdev.us",
+    "repo_base_url": "https://github.com/ResearchDataCom",
+    "project_name": "{{ cookiecutter.project_slug.replace('_', ' ').title() }}",
+    "package_slug": "{{ cookiecutter.project_slug.replace('_', '-') }}",
+    "docs_url": "{{ cookiecutter.docs_base_url }}/{{ cookiecutter.package_slug }}",
+    "repo_url": "{{ cookiecutter.repo_base_url }}/{{ cookiecutter.package_slug }}",
+    "_copy_without_render": [
+        ".github/workflows/ci.yaml",
+        ".gitignore",
+        "docs/_templates/*.html"
+    ],
+    "__destination_only": ""
+}
