@@ -1,3 +1,12 @@
+## v1.3.2 (2026-04-29)
+
+### Bug Fixes
+
+- update tofuutils/pre-commit-opentofu to v2.3.0
+- update rhysd/actionlint to v1.7.12
+- update commitizen-tools/commitizen to v4.13.10
+- update ResearchDataCom/actions to v2.1.2
+
 ## v1.3.1 (2026-04-28)
 
 ### Bug Fixes
