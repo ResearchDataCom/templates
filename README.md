@@ -1,4 +1,4 @@
-# Project Source Code Templates
+# Cookiecutter Templates
 
 Bootstrap new work using the provided source code templates with
 [cookiecutter](https://cookiecutter.readthedocs.io/).
