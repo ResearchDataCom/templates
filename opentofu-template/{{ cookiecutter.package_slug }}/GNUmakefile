@@ -251,7 +251,7 @@ clean: docsclean
 	find . -type d -name .external_modules -print | xargs rm -rf
 	find . -type d -name .terraform\* -print | xargs rm -rf
 
-# this could remove packages other that the ones listed, so keep any
+# This could remove packages other that the ones listed, so keep any
 # confirmation prompts (requires local administrator rights).
 clean-deps:
 	$(eval uname = $(or $(shell uname)))
