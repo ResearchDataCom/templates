@@ -1,3 +1,9 @@
+## v1.3.3 (2026-04-30)
+
+### Bug Fixes
+
+- **opentofu-template**: restyle gitignore headings to match other sections/templates
+
 ## v1.3.2 (2026-04-29)
 
 ### Bug Fixes
