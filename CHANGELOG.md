@@ -1,3 +1,9 @@
+## v1.3.4 (2026-04-30)
+
+### Bug Fixes
+
+- limit the autodoc2 package index to Python modules
+
 ## v1.3.3 (2026-04-30)
 
 ### Bug Fixes
