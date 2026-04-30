@@ -1,4 +1,4 @@
-### OpenTofu/Terraform (https://github.com/github/gitignore)
+## OpenTofu/Terraform (https://github.com/github/gitignore)
 
 # Do not store credentials in Git repositories!
 .secrets*
