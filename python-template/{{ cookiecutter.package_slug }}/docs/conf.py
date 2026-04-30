@@ -139,12 +139,13 @@ exclude_patterns = [".*", "Thumbs.db", ".DS_Store"]
 """Ignore these files/folders when sourcing content."""
 
 autodoc2_packages = [
-    {
-        "module": "{{ cookiecutter.project_slug }}",
-        "path": "../src/{{ cookiecutter.project_slug }}/",
-    },
-    {"module": "tests", "path": "../tests/"},
-    {"module": "docs", "path": "../docs/"},
+    {"module": m, "path": p}
+    for m, p in [
+        ("docs", "../docs/"),
+        ("tests", "../tests/"),
+        ("{{ cookiecutter.project_slug }}", "../src/{{ cookiecutter.project_slug }}/"),
+    ]
+    if (Path(p) / "__init__.py").exists()
 ]
 """Search these locations for code to document."""
 
