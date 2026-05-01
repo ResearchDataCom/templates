@@ -72,10 +72,10 @@ MACPORTS_BUILD_DEPS = \
 	py-awscli2 \
 	py313-cairosvg \
 	shellcheck \
-	sqlite3 \
 	tflint \
 	tfupdate \
 	trivy \
+
 # Get the Python egg name.  This kludge assumes package names are
 # always in kebab-case, but the Right Way requires understanding of
 # pip's or setuptools' internals.
@@ -258,7 +258,8 @@ clean-deps:
 	$(if $(filter Darwin, $(uname)), \
 		sudo port uninstall $(MACPORTS_BUILD_DEPS); \
 		brew uninstall $(HOMEBREW_FORMULA_BUILD_DEPS); \
-		brew uninstall --cask $(HOMEBREW_CASK_BUILD_DEPS))
+		brew uninstall --cask $(HOMEBREW_CASK_BUILD_DEPS); \
+	)
 	$(if $(filter Linux, $(uname)), \
 		$(eval distro = $(or $(shell lsb_release -is))))
 	$(if $(filter Debian Ubuntu, $(distro)), \

@@ -24,10 +24,8 @@ dependencies = []
 dev = [
     "autopep8",
     "black",
-    "build",
     "commitizen",
     "id",
-    "ipdb",
     "isort",
     "jedi",
     "matplotlib",
@@ -44,7 +42,6 @@ dev = [
     "sphinx-book-theme",
     "sphinx-intl",
     "sphobjinv",
-    "twine",
     "yapf",
     "yq",
     # Keep the list of flake8 plugins in sync with
