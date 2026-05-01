@@ -1,3 +1,9 @@
+## v1.3.5 (2026-05-01)
+
+### Bug Fixes
+
+- **opentofu-template**: trim build dependencies while making customization easier
+
 ## v1.3.4 (2026-04-30)
 
 ### Bug Fixes
