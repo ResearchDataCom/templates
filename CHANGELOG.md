@@ -1,3 +1,10 @@
+## v1.3.6 (2026-05-21)
+
+### Bug Fixes
+
+- **python-template**: retitle the home page to remove a confusing naming conflict
+- **opentofu-template**: tailor commit message writing guidance for infrastructure-as-code projects
+
 ## v1.3.5 (2026-05-01)
 
 ### Bug Fixes
