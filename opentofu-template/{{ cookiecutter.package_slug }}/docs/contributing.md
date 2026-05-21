@@ -66,8 +66,8 @@ This project implements
   ending punctuation.
 
 - The commit type **MUST** be one of {term}`build`, {term}`chore`,
-  {term}`ci`, {term}`docs`, {term}`feat`, {term}`fix`,
-  {term}`refactor`, or {term}`style`.
+  {term}`ci`, {term}`docs`, {term}`feat`, {term}`fix`, {term}`perf`,
+  {term}`refactor`, {term}`style`, or {term}`test`.
 
 ### Commit Scopes
 
@@ -108,12 +108,11 @@ top-level resource definitions like `main.tf`.
 
 {.glossary}
 `feat`
-: new content
+: a new feature
 
 {.glossary}
 `fix`
-: a content edit, e.g., correcting a grammar/spelling mistake or a
-  factual error
+: a bug fix
 
 {.glossary}
 `perf`
@@ -121,11 +120,11 @@ top-level resource definitions like `main.tf`.
 
 {.glossary}
 `refactor`
-: an edit that neither makes corrections nor adds content
+: a code change that neither fixes a bug nor adds a feature
 
 {.glossary}
 `style`
-: an edit that only affects formatting, or a change related to the
+: a change that only affects formatting, or a change related to the
   linter configuration
 
 {.glossary}
