@@ -1,3 +1,13 @@
+## v1.4.0 (2026-06-02)
+
+### Bug Fixes
+
+- update ResearchDataCom/actions to v2.2.0
+
+### New Features
+
+- publish versioned documentation at release time
+
 ## v1.3.6 (2026-05-21)
 
 ### Bug Fixes
