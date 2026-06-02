@@ -14,11 +14,11 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/pre-commit@e090df9783f33a74a04ffd6ba047901aba70b6d8 # v2.1.2
+      - uses: ResearchDataCom/actions/pre-commit@aadcc6fce459afd822ace8e5b14383032dc523ea # v2.2.0
         with:
           access-app-id: ${{ vars.PRIVATE_REPOSITORY_ACCESS_APP_ID }}
           access-key: ${{ secrets.PRIVATE_REPOSITORY_ACCESS_KEY }}
-      - uses: ResearchDataCom/actions/opentofu-freeze@e090df9783f33a74a04ffd6ba047901aba70b6d8 # v2.1.2
+      - uses: ResearchDataCom/actions/opentofu-freeze@aadcc6fce459afd822ace8e5b14383032dc523ea # v2.2.0
 
   release:
     # Prevent race conditions of more than one release job in case of
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: release
-        uses: ResearchDataCom/actions/cz-bump@e090df9783f33a74a04ffd6ba047901aba70b6d8 # v2.1.2
+        uses: ResearchDataCom/actions/cz-bump@aadcc6fce459afd822ace8e5b14383032dc523ea # v2.2.0
     outputs:
       released: ${{ steps.release.outputs.released }}
       tag: ${{ steps.release.outputs.tag }}
@@ -47,7 +47,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/publish-github@e090df9783f33a74a04ffd6ba047901aba70b6d8 # v2.1.2
+      - uses: ResearchDataCom/actions/publish-github@aadcc6fce459afd822ace8e5b14383032dc523ea # v2.2.0
         with:
           artifact-paths: .terraform.lock.hcl
           tag: ${{ needs.release.outputs.tag }}
