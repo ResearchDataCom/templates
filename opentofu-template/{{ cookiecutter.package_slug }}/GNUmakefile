@@ -197,12 +197,9 @@ docs: | $(EGG_NAME).egg-info
 		|| git branch $$lb $$rb; \
 	done
 # Generate the index.
-	mkdir -p build
+	mkdir -p build/docs
 	cat /dev/null > build/versions.txt
-	VERSIONS=$$(git tag | sort -r; git branch \
-		| grep -E -v '^..(HEAD|gh-pages|main|master|releases?(/.*)?)$$' \
-		| cut -c 3-); \
-	CURRENT_VERSION=$$(echo $$VERSIONS | head -1); \
+	VERSIONS=$$(git tag | sort -r); \
 	for v in $$VERSIONS; do \
 		TRANSLATIONS=$$( \
 			echo en; \
@@ -213,6 +210,9 @@ docs: | $(EGG_NAME).egg-info
 		echo { \"$$v\": $$(echo "$$TRANSLATIONS" | jq -cRn '[inputs]') } \
 		>> build/versions.txt; \
 	done
+	LATEST_VERSION=$$(git tag | sort -r | head -1); \
+	sed -e s/LATEST_VERSION/$$LATEST_VERSION/ \
+		docs/.index.html > build/docs/index.html
 	cat build/versions.txt | jq -s add > build/versions.json
 # Copy the repository to a temporary directory.  Stash the Sphinx
 # configuration from the real work tree for later use.
@@ -222,7 +222,7 @@ docs: | $(EGG_NAME).egg-info
 	cp build/versions.json docs/conf.py docs/_templates/versions.html \
 		$(TMP)/build
 # Build the documentation for each translation of each version.
-	set -Eeou pipefail; \
+	set -eux; \
 	. .venv/bin/activate; \
 	cd $(TMP); \
 	for v in $$(jq -r 'keys[]' build/versions.json); do \

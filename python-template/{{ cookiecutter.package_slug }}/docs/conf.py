@@ -218,7 +218,7 @@ html_theme_options = {
 
 """  # noqa: B950
 
-html_title = f"{project} v{release}"
+html_title = f"{project}"
 """The title for HTML documentation;
 cf. <inv:sphinx:std:confval#html_title>.
 
@@ -231,10 +231,10 @@ html_static_path = ["_static"]
 html_sidebars = {
     "**": [
         "navbar-logo.html",
+        "versions.html",
         "icon-links.html",
         "search-button-field.html",
         "sbt-sidebar-nav.html",
-        "versions.html",
     ]
 }
 
@@ -263,6 +263,7 @@ myst_url_schemes = {
             "/{{ '{{' }} path {{ '}}' }}#{{ '{{' }} fragment {{ '}}' }}"
         ),
     },
+    "wiki": "https://en.wikipedia.org/wiki/{{ '{{' }} path {{ '}}' }}#{{ '{{' }} fragment {{ '}}' }}",
 }
 """Define custom URL schemes;
 cf. <inv:myst:std:doc#syntax/cross-referencing>.
