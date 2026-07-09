@@ -81,7 +81,7 @@ repos:
 
   # Lint/reformat the OpenTofu module.
   - repo: https://github.com/tofuutils/pre-commit-opentofu
-    rev: v2.3.0
+    rev: c43835bd4b4962a2121e6dcdceaaf1440d68885d  # frozen: v2.4.2
     hooks:
       - id: tofu_validate
       - id: tofu_fmt
