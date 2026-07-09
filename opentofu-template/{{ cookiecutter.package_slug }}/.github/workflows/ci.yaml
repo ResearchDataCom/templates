@@ -59,6 +59,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: ResearchDataCom/actions/sphinx-build@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
+        with:
+          requirements: null
 
   ghpages:
     needs:
