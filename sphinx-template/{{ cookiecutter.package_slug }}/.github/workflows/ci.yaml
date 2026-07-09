@@ -14,7 +14,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/pre-commit@aadcc6fce459afd822ace8e5b14383032dc523ea # v2.2.0
+      - uses: ResearchDataCom/actions/pre-commit@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
         with:
           access-app-id: ${{ vars.PRIVATE_REPOSITORY_ACCESS_APP_ID }}
           access-key: ${{ secrets.PRIVATE_REPOSITORY_ACCESS_KEY }}
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: release
-        uses: ResearchDataCom/actions/cz-bump@aadcc6fce459afd822ace8e5b14383032dc523ea # v2.2.0
+        uses: ResearchDataCom/actions/cz-bump@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
     outputs:
       released: ${{ steps.release.outputs.released }}
       tag: ${{ steps.release.outputs.tag }}
@@ -46,7 +46,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/publish-github@aadcc6fce459afd822ace8e5b14383032dc523ea # v2.2.0
+      - uses: ResearchDataCom/actions/publish-github@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
         with:
           artifact-paths: ""
           tag: ${{ needs.release.outputs.tag }}
@@ -57,7 +57,7 @@ jobs:
     if: needs.release.outputs.released
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/sphinx-build@aadcc6fce459afd822ace8e5b14383032dc523ea # v2.2.0
+      - uses: ResearchDataCom/actions/sphinx-build@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
 
   ghpages:
     needs:
@@ -68,4 +68,4 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/publish-ghpages@aadcc6fce459afd822ace8e5b14383032dc523ea # v2.2.0
+      - uses: ResearchDataCom/actions/publish-ghpages@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
