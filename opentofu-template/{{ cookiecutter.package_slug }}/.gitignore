@@ -35,10 +35,6 @@ override.tf*
 
 ## Python (https://github.com/github/gitignore)
 
-# Do not store credentials in Git repositories!
-.secrets*
-.vars*
-
 # Virtual environments can be named anything, but these are common.
 .env*
 .venv*
