@@ -50,7 +50,7 @@ repos:
 
   # Check Python syntax/style.
   - repo: https://github.com/pycqa/flake8
-    rev: 7.3.0
+    rev: d93590f5be797aabb60e3b09f2f52dddb02f349f  # frozen: 7.3.0
     hooks:
       - id: flake8
         additional_dependencies:
