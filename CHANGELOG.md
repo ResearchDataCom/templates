@@ -1,3 +1,20 @@
+## v1.4.1 (2026-07-09)
+
+### Bug Fixes
+
+- **opentofu-template**: remove redundant rules regarding intentionally untracked files
+- remove redundant documentation stubs
+- ignore missing Python dependency pins
+- update ResearchDataCom/actions to v2.3.0
+- update tofuutils/pre-commit-opentofu to v2.4.2 and pin by commit hash
+- update psf/black to v26.5.1 and pin by commit hash
+- update pycqa/isort to v9.0.0a3 and pin by commit hash
+- pin pycqa/flake8 v7.3.0 by commit hash
+- pin rhysd/actionlint v1.7.12 by commit hash
+- pin koalaman/shellcheck-precommit v0.11.0 by commit hash
+- update commitizen-tools/commitizen to v4.16.4 and pin by commit hash
+- pin pre-commit/pre-commit-hooks v6.0.0 by commit hash
+
 ## v1.4.0 (2026-06-02)
 
 ### Bug Fixes
