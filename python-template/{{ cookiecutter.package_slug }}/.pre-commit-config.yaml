@@ -18,7 +18,7 @@ repos:
   # Ensure commit messages use Conventional Commits formatting;
   # cf. pyproject.toml.
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.13.10
+    rev: a6859a7b8182086a5e013deab8fefc0597b502e9  # frozen: v4.16.4
     hooks:
       - id: commitizen
         stages: [commit-msg]
