@@ -66,7 +66,7 @@ repos:
 
   # Sort Python imports.
   - repo: https://github.com/pycqa/isort
-    rev: 8.0.1
+    rev: dac090ce4d9ee313d086e2e89ab1acb8c2664fa1  # frozen: 9.0.0a3
     hooks:
       - id: isort
 
