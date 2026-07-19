@@ -69,7 +69,7 @@ This project implements
   {term}`ci`, {term}`docs`, {term}`feat`, {term}`fix`, {term}`perf`,
   {term}`refactor`, {term}`style`, or {term}`test`.
 
-### Commit Scopes
+## Commit Scopes
 
 An atomic commit can alter multiple files.  For example, an interface
 change would require modifications the class definitions, method
@@ -84,7 +84,7 @@ Changes covering multiple scopes or changes not specific to one scope
 **MUST NOT** specify a scope, including changes instigated by code in
 top-level resource definitions like `main.tf`.
 
-### Commit Types
+## Commit Types
 
 {.glossary}
 `build`

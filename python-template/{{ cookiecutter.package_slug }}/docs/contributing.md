@@ -76,7 +76,7 @@ This project implements
   {term}`ci`, {term}`docs`, {term}`feat`, {term}`fix`, {term}`perf`,
   {term}`style`, {term}`refactor`, or {term}`test`.
 
-### Commit Scopes
+## Commit Scopes
 
 An atomic commit can alter multiple files.  For example, an interface
 change would require modifications the class definitions, method
@@ -97,7 +97,7 @@ Changes covering multiple scopes or changes not specific to one scope
 second-level [dunder](https://wiki.python.org/moin/DunderAlias)
 modules such as `src/{{ cookiecutter.project_slug }}/__init__.py`.
 
-### Commit Types
+## Commit Types
 
 {.glossary}
 `build`

@@ -69,7 +69,7 @@ This project implements
   {term}`ci`, {term}`docs`, {term}`feat`, {term}`fix`,
   {term}`refactor`, or {term}`style`.
 
-### Commit Scopes
+## Commit Scopes
 
 An atomic commit can alter multiple files.  For example, an interface
 change would require modifications the class definitions, method
@@ -80,7 +80,7 @@ context to reviewers by naming the essential component of the change.
 
 No commit scopes are currently in use.
 
-### Commit Types
+## Commit Types
 
 {.glossary}
 `build`
