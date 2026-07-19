@@ -14,6 +14,8 @@ Enter
 
 Wait+Screen /Choose from/
 Sleep 2s
+Type "3"
+Sleep 1s
 Enter
 
 Wait+Screen /project_slug/
