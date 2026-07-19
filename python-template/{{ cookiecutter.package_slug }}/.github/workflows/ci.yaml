@@ -14,11 +14,11 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/pre-commit@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
+      - uses: ResearchDataCom/actions/pre-commit@181ab3c28a4c3942ee37b25dd89442bdcf0b6509 # v3.0.0
         with:
           access-app-id: ${{ vars.PRIVATE_REPOSITORY_ACCESS_APP_ID }}
           access-key: ${{ secrets.PRIVATE_REPOSITORY_ACCESS_KEY }}
-      - uses: ResearchDataCom/actions/python-freeze@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
+      - uses: ResearchDataCom/actions/python-freeze@181ab3c28a4c3942ee37b25dd89442bdcf0b6509 # v3.0.0
 
   test:
     needs:
@@ -30,7 +30,7 @@ jobs:
           - "3.13"
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/python-test@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
+      - uses: ResearchDataCom/actions/python-test@181ab3c28a4c3942ee37b25dd89442bdcf0b6509 # v3.0.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: release
-        uses: ResearchDataCom/actions/cz-bump@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
+        uses: ResearchDataCom/actions/cz-bump@181ab3c28a4c3942ee37b25dd89442bdcf0b6509 # v3.0.0
     outputs:
       released: ${{ steps.release.outputs.released }}
       tag: ${{ steps.release.outputs.tag }}
@@ -64,7 +64,7 @@ jobs:
           - "3.13"
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/python-build@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
+      - uses: ResearchDataCom/actions/python-build@181ab3c28a4c3942ee37b25dd89442bdcf0b6509 # v3.0.0
         with:
           artifact-name: python-${{ matrix.python-version }}-build-artifacts
           python-version: ${{ matrix.python-version }}
@@ -78,7 +78,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/publish-github@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
+      - uses: ResearchDataCom/actions/publish-github@181ab3c28a4c3942ee37b25dd89442bdcf0b6509 # v3.0.0
         with:
           artifact-paths: requirements.txt,dist/*
           tag: ${{ needs.release.outputs.tag }}
@@ -89,7 +89,7 @@ jobs:
     if: needs.release.outputs.released
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/sphinx-build@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
+      - uses: ResearchDataCom/actions/sphinx-build@181ab3c28a4c3942ee37b25dd89442bdcf0b6509 # v3.0.0
 
   ghpages:
     needs:
@@ -100,4 +100,4 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: ResearchDataCom/actions/publish-ghpages@6ee0203004e0494bd8b062e28e66ca4048207cb2 # v2.3.0
+      - uses: ResearchDataCom/actions/publish-ghpages@181ab3c28a4c3942ee37b25dd89442bdcf0b6509 # v3.0.0
