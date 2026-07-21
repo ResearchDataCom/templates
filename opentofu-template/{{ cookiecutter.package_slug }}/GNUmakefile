@@ -49,13 +49,10 @@ apt-get -o Debug::pkgProblemResolver=yes -y --no-install-recommends install
 DEBIAN_SOURCE_DEPS = \
 	python3-cairosvg \
 
-# On macOS, install these build dependencies (formulas) via Homebrew.
-HOMEBREW_FORMULA_BUILD_DEPS = \
-	tofu \
-
-# On macOS, install these build dependencies (casks) via Homebrew.
-HOMEBREW_CASK_BUILD_DEPS = \
-	docker \
+# On macOS, install these build dependencies via Homebrew.
+HOMEBREW_BUILD_DEPS = \
+	opentofu \
+	docker-desktop \
 
 # On macOS, install these build dependencies via MacPorts.
 MACPORTS_BUILD_DEPS = \
@@ -125,8 +122,7 @@ build-deps:
 	$(eval uname = $(or $(shell uname)))
 	$(if $(filter Darwin, $(uname)), \
 		sudo port -N install $(MACPORTS_BUILD_DEPS); \
-		brew install $(HOMEBREW_FORMULA_BUILD_DEPS); \
-		brew install --cask $(HOMEBREW_CASK_BUILD_DEPS); \
+		brew install $(HOMEBREW_BUILD_DEPS); \
 	)
 	$(if $(filter Linux, $(uname)), \
 		$(eval distro = $(or $(shell lsb_release -is))))
@@ -257,8 +253,7 @@ clean-deps:
 	$(eval uname = $(or $(shell uname)))
 	$(if $(filter Darwin, $(uname)), \
 		sudo port uninstall $(MACPORTS_BUILD_DEPS); \
-		brew uninstall $(HOMEBREW_FORMULA_BUILD_DEPS); \
-		brew uninstall --cask $(HOMEBREW_CASK_BUILD_DEPS); \
+		brew uninstall $(HOMEBREW_BUILD_DEPS); \
 	)
 	$(if $(filter Linux, $(uname)), \
 		$(eval distro = $(or $(shell lsb_release -is))))
@@ -267,4 +262,5 @@ clean-deps:
 			$(DEBIAN_BUILD_DEPS) \
 			$(addsuffix -build-deps, $(DEBIAN_SOURCE_DEPS)) \
 		; \
-		sudo apt-get autoremove)
+		sudo apt-get autoremove; \
+	)

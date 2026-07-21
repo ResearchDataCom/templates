@@ -55,13 +55,10 @@ DEBIAN_SOURCE_DEPS = \
 	python3-cairosvg \
 	postgresql \
 
-# On macOS, install these build dependencies (formulas) via Homebrew.
-HOMEBREW_FORMULA_BUILD_DEPS = \
+# On macOS, install these build dependencies via Homebrew.
+HOMEBREW_BUILD_DEPS = \
 	freetds \
-
-# On macOS, install these build dependencies (casks) via Homebrew.
-HOMEBREW_CASK_BUILD_DEPS = \
-	docker \
+	docker-desktop \
 
 # On macOS, install these build dependencies via MacPorts.
 MACPORTS_BUILD_DEPS = \
@@ -159,8 +156,7 @@ build-deps:
 	$(eval uname = $(or $(shell uname)))
 	$(if $(filter Darwin, $(uname)), \
 		sudo port -N install $(MACPORTS_BUILD_DEPS); \
-		brew install $(HOMEBREW_FORMULA_BUILD_DEPS); \
-		brew install --cask $(HOMEBREW_CASK_BUILD_DEPS); \
+		brew install $(HOMEBREW_BUILD_DEPS); \
 	)
 	$(if $(filter Linux, $(uname)), \
 		$(eval distro = $(or $(shell lsb_release -is))))
@@ -179,7 +175,8 @@ build-deps:
 		curl https://bootstrap.pypa.io/get-pip.py | python3.13 -; \
 		sudo DEBIAN_FRONTEND=noninteractive \
 			mk-build-deps -i -r -t "$(APT_GET_INSTALL)" \
-				$(DEBIAN_SOURCE_DEPS); \
+				$(DEBIAN_SOURCE_DEPS) \
+		; \
 		rm -f *.buildinfo *.changes; \
 	)
 
@@ -332,8 +329,8 @@ clean-deps:
 	$(eval uname = $(or $(shell uname)))
 	$(if $(filter Darwin, $(uname)), \
 		sudo port uninstall $(MACPORTS_BUILD_DEPS); \
-		brew uninstall $(HOMEBREW_FORMULA_BUILD_DEPS); \
-		brew uninstall --cask $(HOMEBREW_CASK_BUILD_DEPS))
+		brew uninstall $(HOMEBREW_BUILD_DEPS); \
+	)
 	$(if $(filter Linux, $(uname)), \
 		$(eval distro = $(or $(shell lsb_release -is))))
 	$(if $(filter Debian Ubuntu, $(distro)), \
@@ -341,4 +338,5 @@ clean-deps:
 			$(DEBIAN_BUILD_DEPS) \
 			$(addsuffix -build-deps, $(DEBIAN_SOURCE_DEPS)) \
 		; \
-		sudo apt-get autoremove)
+		sudo apt-get autoremove; \
+	)
