@@ -1,3 +1,20 @@
+## v2.0.0 (2026-07-26)
+
+### Bug Fixes
+
+- apply the same heading levels throughout the contribution guidance
+- update pycqa/isort to v9.0.0b1
+- update commitizen-tools/commitizen to v4.16.5
+- update ResearchDataCom/actions to v3.0.0
+
+### New Features
+
+- dedicate this work to the public domain
+
+### Refactoring
+
+- combine lists of Homebrew formulas and casks
+
 ## v1.4.1 (2026-07-09)
 
 ### Bug Fixes
