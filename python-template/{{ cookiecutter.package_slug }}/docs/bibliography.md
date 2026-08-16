@@ -1,6 +1,7 @@
-# Annotated Bibliography
+# Bibliography
 
 :::{bibliography}
+:style: plain
 :all:
 
 :::
