@@ -1,0 +1,92 @@
+# Ignore temporary files/folders, but note that this doesn't always
+# work.  Check each linter's documentation for any required
+# tool-specific exclusions; cf. https://stackoverflow.com/a/75560858.
+exclude: |-
+  (?x)^(
+      build.*|
+      dist.*
+  )$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  # Ensure commit messages use Conventional Commits formatting;
+  # cf. pyproject.toml.
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: 054e4a278e11abb9b8df6c103fa64f544d468ee5  # frozen: v4.19.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  # Check shell scripts, limiting output to errors and warnings.
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: 99470f5e12208ff0fb17ab81c3c494f7620a1d8d  # frozen: v0.11.0
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+
+  # Check GitHub Actions workflows.
+  - repo: https://github.com/rhysd/actionlint
+    rev: 914e7df21a07ef503a81201c76d2b11c789d3fca  # frozen: v1.7.12
+    hooks:
+      - id: actionlint
+
+  # Check third-party actions' pins.
+  - repo: local
+    hooks:
+      - id: pinact
+        name: Third-party actions
+        language: unsupported
+        entry: pinact run -u --min-age 7
+        pass_filenames: false
+
+  # Check Python syntax/style.
+  - repo: https://github.com/pycqa/flake8
+    rev: cfbbfdeb2391c14a37e101e92a77f54f329e1726  # frozen: 7.4.1
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          # Keep the list of flake8 plugins in sync with
+          # pyproject.toml.
+          - dlint
+          - flake8-bandit
+          - flake8-bugbear
+          - flake8-comprehensions
+          - flake8-docstrings
+          - flake8-eradicate
+          - flake8-fixme
+          - flake8-future-import
+          - flake8-pytest-style
+          - flake8-requirements
+
+  # Sort Python imports.
+  - repo: https://github.com/pycqa/isort
+    rev: 9f905615631c545f5aea2516508109350d1d2f7d  # frozen: 9.0.2
+    hooks:
+      - id: isort
+
+  # Reformat Python code after sorting imports.
+  - repo: https://github.com/psf/black
+    rev: 87928e6d6761a4a6d22250e1fee5601b3998086e  # frozen: 26.5.1
+    hooks:
+      - id: black
+
+  # Check JavaScript syntax/style.
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: 809d037d62978decc620b5a55e8ee5b8b54d8d65
+    hooks:
+      - id: eslint
+
+  # Reformat JavaScript (and related) code.
+  - repo: https://github.com/JoC0de/pre-commit-prettier
+    rev: '4e2c8f5bd88fd677fda4d5f4e38d4a2abfb7d848'  # frozen: v3.9.9
+    hooks:
+      - id: prettier
+        types_or:
+          - css
+          - javascript
