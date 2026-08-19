@@ -19,6 +19,11 @@
             "path": "sphinx-template",
             "title": "Sphinx",
             "description": "Versioned documentation generated using Sphinx"
+        },
+        "javascript-template": {
+            "path": "javascript-template",
+            "title": "JavaScript",
+            "description": "A JavaScript distribution with versioned documentation generated using Sphinx-js"
         }
     }
 }

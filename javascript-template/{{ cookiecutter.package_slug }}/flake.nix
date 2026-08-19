@@ -34,6 +34,7 @@
             python3
             pre-commit
             commitizen
+            pinact
           ];
         };
       }
