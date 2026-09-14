@@ -19,6 +19,11 @@
             "path": "sphinx-template",
             "title": "Sphinx",
             "description": "Versioned documentation generated using Sphinx"
+        },
+        "docker-template": {
+            "path": "docker-template",
+            "title": "Docker",
+            "description": "A Docker template that builds images according to Docker Official Images processes"
         }
     }
 }

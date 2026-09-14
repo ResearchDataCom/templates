@@ -1,0 +1,50 @@
+set -Eeuo pipefail
+
+
+# Allow "$XYZ_PASSWORD_FILE" to fill in the value of "$XYZ_PASSWORD"
+# from a file, especially for Docker's secrets feature.
+#
+# usage: file_env VAR [DEFAULT]
+#  e.g.: file_env 'XYZ_PASSWORD' 'example'
+function file_env() {
+    local var="$1"
+    local fileVar="${var}_FILE"
+    local def="${2:-}"
+    if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
+        echo >&2 "error: mutually exclusive variables $var and $fileVar are set"
+        exit 1
+    fi
+    local val="$def"
+    if [ "${!var:-}" ]; then
+        val="${!var}"
+    elif [ "${!fileVar:-}" ]; then
+        val="$(< "${!fileVar}")"
+    fi
+    export "$var"="$val"
+    unset "$fileVar"
+}
+
+
+# Check whether this file is being run/sourced from another script.
+function _is_sourced() {
+    # https://unix.stackexchange.com/a/215279
+    [ "${#FUNCNAME[@]}" -ge 2 ] \
+        && [ "${FUNCNAME[0]}" = '_is_sourced' ] \
+        && [ "${FUNCNAME[1]}" = 'source' ]
+}
+
+
+function _main() {
+    # Add any additional logic here as needed for your container
+    exec "$@"
+}
+
+
+if ! _is_sourced; then
+    _main "$@"
+fi
+
+# Local Variables:
+# mode: sh
+# sh-shell: bash
+# End:

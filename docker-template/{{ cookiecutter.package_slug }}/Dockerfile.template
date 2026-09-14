@@ -1,0 +1,37 @@
+FROM SCRATCH
+SHELL ["/bin/bash", "-Eeuo", "pipefail", "-c"]
+
+# Install run-time dependencies.
+RUN <<EOF
+    apt-get update
+    rm -rf /var/lib/apt/lists/*
+EOF
+
+# Drop root privileges to hinder container escapes.
+# USER solon-backend:solon-backend
+
+# Install the product from its private repository on GitHub.
+# Authenticate using an access token provided by the builder via
+# Docker Secrets.  Requires BuildKit, which sets $BUILDARCH and
+# $BUILDVARIANT.
+ARG BUILDARCH
+ARG BUILDVARIANT
+RUN --mount=type=secret,id=GH_TOKEN,uid=1000 <<EOF
+    GH_TOKEN="$(cat /run/secrets/GH_TOKEN)"; export GH_TOKEN
+    mkdir -p .local/bin
+    curl -L "https://github.com/cli/cli/releases/download/v2.81.0/gh_2.81.0_linux_${BUILDARCH}${BUILDVARIANT}.tar.gz" \
+        | tar -C .local/bin --strip-components=2 --wildcards -xzf - "*/bin/gh"
+    gh auth setup-git
+{{ if .version then ( -}}
+    gh release -R https://github.com/ResearchDataCom/example.git download "v{{ .version }}" -p readme.md
+{{ ) else ( -}}
+    # echo "solon-backend[psycopg] @ git+https://github.com/ResearchDataCom/example.git@{{ env.version }}" > requirements.txt
+{{ ) end -}}
+EOF
+
+# Set up the container's entry point.
+COPY --chown=root:root --chmod=755 docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+EXPOSE 1234
+HEALTHCHECK CMD curl -fv http://localhost:8080/ || exit 1
+CMD ["echo", "hello"]
