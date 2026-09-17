@@ -1,3 +1,16 @@
+## v2.0.1 (2026-09-17)
+
+### Bug Fixes
+
+- add missing license headers
+- replace in-line contribution guidance with proper admonitions
+- update pycqa/isort to v9.0.1
+- update commitizen-tools/commitizen to v4.18.1
+- update ResearchDataCom/actions to v4.0.0
+- work around sphinx-book-theme#986
+- standardize on plain-style bibliographies
+- set the redirect page's language
+
 ## v2.0.0 (2026-07-26)
 
 ### Bug Fixes
