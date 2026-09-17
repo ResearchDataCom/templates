@@ -9,9 +9,9 @@ visit https://creativecommons.org/publicdomain/zero/1.0/.
 
 Bootstrap new work using the provided source code templates with
 [cookiecutter](https://cookiecutter.readthedocs.io/).
-[_Good DevOps Practice_](https://devops.rdctdev.us/) describes the
-underlying methodology and recommended tooling in greater detail.  For
-example:
+[_Good DevOps Practice_](https://github.com/ResearchDataCom/good-devops-practice)
+describes the underlying methodology and recommended tooling in
+greater detail.  For example:
 
 ```sh
 cookiecutter gh:ResearchDataCom/templates
