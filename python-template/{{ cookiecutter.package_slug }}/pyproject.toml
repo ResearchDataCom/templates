@@ -43,7 +43,8 @@ dev = [
     "sphinxcontrib-bibtex",
     "sphinxcontrib-svg2pdfconverter[CairoSVG]",
     "sphinx-autodoc2[cli]",
-    "sphinx-book-theme",
+    # https://github.com/ResearchDataCom/templates/issues/11
+    "sphinx-book-theme==1.2.0",
     "sphinx-intl",
     "sphobjinv",
     "twine",

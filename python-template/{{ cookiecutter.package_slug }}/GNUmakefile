@@ -48,7 +48,7 @@ DEBIAN_BUILD_DEPS = \
 	sqlite3 \
 	xmlsec1 \
 
-# On Debian/Ubuntu, install these Python packages' build dependencies.
+# On Debian/Ubuntu, install these packages' build dependencies.
 APT_GET_INSTALL = \
 apt-get -o Debug::pkgProblemResolver=yes -y --no-install-recommends install
 DEBIAN_SOURCE_DEPS = \
