@@ -2,19 +2,34 @@
 
 The project practices [test-driven development](https://tdd.mooc.fi/)
 in
-[Git feature (topic) branches](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow)
-to maintain a [linear commit history](https://archive.is/VpWTs).
-Changes must be self-contained and buildable, with updated tests and
-documentation.  Please rebase changes on the latest HEAD of the main
-branch before submitting them for review as a
+[Git feature (topic) branches](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow).
+Please maintain a [linear commit history](https://archive.is/VpWTs) by
+rebasing changes on the latest HEAD of the main branch before
+submitting them for review as a
 [GitHub pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests).
 
 ## Development Environment
 
-This project requires Python 3.12 (or newer).  To set up your
-development environment on Linux or macOS, run these
-[GNU Make](https://www.gnu.org/software/make/) commands from the
-project root directory.
+:::{admonition} Guidance
+
+This project **REQUIRES** [Git](https://git-scm.com/),
+[GNU Make](https://www.gnu.org/software/make/), and
+[Python](https://www.python.org/) 3.12 or later.
+
+:::
+
+Additionally, on Linux it needs
+[lsb-release](https://refspecs.linuxfoundation.org/lsb.shtml).  On
+macOS it uses the
+[Command Line Tools for Xcode](https://developer.apple.com/documentation/xcode/installing-the-command-line-tools),
+[Homebrew](https://brew.sh/), and
+[MacPorts](https://www.macports.org/).  Several of the available make
+targets are listed below.  Review the [makefile](github:GNUmakefile)
+for additional details.
+
+`make build-deps`
+: Install the remaining system-level build dependencies.  Requires
+  root access via [sudo](https://www.sudo.ws/).
 
 `make setup`
 : Create (or update) a
@@ -28,13 +43,6 @@ project root directory.
   environment to be active in your code editor or
   [Git porcelain](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain).
 
-`make clean`
-: Reset the development environment, which includes removing the
-  pre-commit hooks.
-
-Additional targets are available, several of which are listed below.
-Review the makefile for details.
-
 `make lint`
 : Check code syntax and style.
 
@@ -44,7 +52,18 @@ Review the makefile for details.
 `make smoke`
 : Run a shorter, faster subset of the test suite.
 
+`make clean`
+: Reset the development environment, which includes removing the
+  pre-commit hooks.
+
 ## Code Style
+
+:::{admonition} Guidance
+
+Changes **MUST** be self-contained and buildable, with updated tests
+and documentation.
+
+:::
 
 This project follows these code styles:
 
@@ -58,44 +77,56 @@ This project follows these code styles:
 
 ## Commit Messages
 
-This project implements
-[Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) using
-[Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/):
+:::{admonition} Guidance
 
-- Please use English in commit messages.
+This project **REQUIRES**
+[Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/),
+with which it implements
+[Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html).
 
-- The first line of the commit message **SHOULD** be at most 100
-  characters, while the rest of the commit message **SHOULD** be
-  wrapped at column 70.
+:::
 
-- The commit description **SHOULD** be an imperative sentence that
-  summarizes the changes, with the starting verb in lower case and no
-  ending punctuation.
+In commit messages:
 
-- The commit type **MUST** be one of {term}`build`, {term}`chore`,
+- Please use English.
+
+- Limit the first line to at most 100 characters.  Wrap the rest of
+  the commit message at column 70.
+
+- Summarize the changes with a one-sentence commit description in the
+  imperative mood, lowercasing the starting verb and omitting ending
+  punctuation.
+
+- For the commit type, specify one of {term}`build`, {term}`chore`,
   {term}`ci`, {term}`docs`, {term}`feat`, {term}`fix`, {term}`perf`,
   {term}`style`, {term}`refactor`, or {term}`test`.
 
 ## Commit Scopes
 
-An atomic commit can alter multiple files.  For example, an interface
-change would require modifications the class definitions, method
-calls, and property references throughout the codebase.  Per
-_Conventional Commits_, a commit scope is an **OPTIONAL**
+:::{admonition} Guidance
+
+Per _Conventional Commits_, a commit scope is an **OPTIONAL**
 abbreviation, acronym, codename, or keyword that provides additional
 context to reviewers by naming the essential component of the change.
-
-For Python code changes, the commit scope **SHOULD** specify the
-second-level Python module name of the code instigating the change.
-The commit scope **MUST NOT** include the module's top-level prefix or
-any suffixes.  Functional/unit test changes **SHOULD** reference the
-scope of the code being exercised, while changes to integration tests
+Changes covering multiple scopes or changes not specific to one scope
 **MUST NOT** specify a scope.
 
-Changes covering multiple scopes or changes not specific to one scope
-**MUST NOT** specify a scope, including changes instigated by code in
-second-level [dunder](https://wiki.python.org/moin/DunderAlias)
-modules such as `src/{{ cookiecutter.project_slug }}/__init__.py`.
+:::
+
+An atomic commit can alter multiple files.  For example, an interface
+change could require modifications to class definitions, method calls,
+property references, and unit tests throughout the project.  The
+commit scope tells reviewers where to focus their analysis.  In change
+logs, commit scopes help sponsors understand the structure of the work
+going into fixes, features, or breaking changes.  For Python code
+changes, the commit scope specifies the second-level Python module
+name of the code instigating the change.  It does not include the
+module's top-level prefix or any suffixes.  Functional or unit test
+changes reference the scope of the code being exercised; likewise for
+module-specific documentation.  Omit the commit scope when describing
+changes to integration tests, to code in second-level
+[dunder](https://wiki.python.org/moin/DunderAlias) modules, or to
+general project documentation.
 
 ## Commit Types
 

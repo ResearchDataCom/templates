@@ -24,7 +24,7 @@ $(if $(call pathsearch,.venv/bin,$(1)), \
 
 # Develop using the latest available supported version of Python.
 PYTHON = \
-$(call pathsearch,$(PATH),python3.13 python3.12 python3.11,exit 1; echo python3)
+$(call pathsearch,$(PATH),python3.14 python3.13 python3.12,exit 1; echo python3)
 PYTHON_VERSION = \
 $(shell $(PYTHON) -c "import sys;print('{}.{}'.format(*sys.version_info[:2]))")
 
