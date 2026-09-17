@@ -19,12 +19,10 @@ HEAD of the main branch before submitting them for review as a
 
 > [!NOTE]
 >
-> Cookiecutter templates can import files from another template using
-> symbolic links.  Contributors and reviewers **MUST** check for these
-> references manually and update them accordingly.  Symbolic links
-> **MUST** be relative to the destination.
+> A Cookiecutter template can import files from another template using
+> a symbolic link.  Contributors and reviewers **MUST** check for
+> these references manually and update them accordingly.  Symbolic
+> links **MUST** be relative to the destination.
 
-A commit's scope **SHOULD** be the top-level directory name, i.e., the
-template name.  Changes covering multiple scopes or changes not
-specific to one scope **MUST NOT** specify a scope, e.g., the
-top-level cookiecutter configuration.
+A template-specific commit scope follows the template's base name,
+e.g., `python-template`.
