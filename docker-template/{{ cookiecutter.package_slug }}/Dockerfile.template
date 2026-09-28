@@ -25,7 +25,7 @@ RUN --mount=type=secret,id=GH_TOKEN,uid=1000 <<EOF
 {{ if .version then ( -}}
     gh release -R https://github.com/ResearchDataCom/example.git download "v{{ .version }}" -p readme.md
 {{ ) else ( -}}
-    # echo "solon-backend[psycopg] @ git+https://github.com/ResearchDataCom/example.git@{{ env.version }}" > requirements.txt
+    # echo "testo @ git+https://github.com/ResearchDataCom/example.git@{{ env.version }}" > requirements.txt
 {{ ) end -}}
 EOF
 

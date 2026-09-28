@@ -1,3 +1,4 @@
+{% raw %}
 set -Eeuo pipefail
 
 
@@ -48,3 +49,4 @@ fi
 # mode: sh
 # sh-shell: bash
 # End:
+{% endraw %}

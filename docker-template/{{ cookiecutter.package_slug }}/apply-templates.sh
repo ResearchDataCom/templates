@@ -58,6 +58,6 @@ EOH
         warn_against_edits
         gawk -f "${jqt}" docker-entrypoint.sh.template
     } > "${version}/docker-entrypoint.sh"
-    cp -a config.py "${version}/"
+    cp -a config "${version}/"
     echo " done."
 done

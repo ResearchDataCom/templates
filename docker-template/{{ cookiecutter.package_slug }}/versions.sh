@@ -16,6 +16,7 @@ cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 # When bootstrapping, create a directory for each desired version, and
 # then run this script with no arguments.  On subsequent runs, list
 # the versions to track on the command line.
+{% raw %}
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
     versions=( */ )
@@ -62,5 +63,6 @@ for version in "${versions[@]}"; do
         )
     }')"
 done
+{% endraw %}
 
 jq <<<"$json" -S . > versions.json
