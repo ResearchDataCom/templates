@@ -26,8 +26,8 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.12"
           - "3.13"
+          - "3.14"
     runs-on: ubuntu-latest
     steps:
       - uses: ResearchDataCom/actions/python-test@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
@@ -60,8 +60,8 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - "3.12"
           - "3.13"
+          - "3.14"
     runs-on: ubuntu-latest
     steps:
       - uses: ResearchDataCom/actions/python-build@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
