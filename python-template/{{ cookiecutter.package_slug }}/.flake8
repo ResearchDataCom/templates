@@ -11,6 +11,11 @@ extend-ignore =
     FI10, FI11, FI12, FI13, FI14, FI15, FI16, FI17, FI18,
     # Test code uses assertions by design.
     S101,
+
+# Python distribution and module names usually match.  When they
+# don't, the linter complains about missing requirements.  Work around
+# this by mapping package names to module names here.  For more
+# information, refer to https://github.com/Arkq/flake8-requirements.
 known-modules = PySAML2:[saml2],PyJWT:[jwt]
 
 # Local Variables:
