@@ -13,4 +13,16 @@ documentation) on the latest HEAD of the main branch before submitting
 them for review as a
 [GitHub pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests).
 
-No commit scopes are currently in use.
+> [!IMPORTANT]
+>
+> A commit's scope **SHOULD** be the top-level directory name.
+> Changes covering multiple scopes or changes not specific to one
+> scope **MUST NOT** specify a scope, e.g., the top-level cookiecutter
+> configuration.
+
+The commit scope specifies the module instigating the change as some
+code/content could be shared within the project.  Functional or unit
+test changes reference the scope of the code being exercised; likewise
+for module-specific documentation.  Omit the commit scope when
+describing changes to integration tests, to code inside of modules
+themselves, or to general project documentation.

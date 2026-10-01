@@ -1,3 +1,4 @@
+# This file is needed to generate the Documentation of nodejs code using sphinx which is a python tool
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
@@ -9,7 +10,7 @@ description = "{{ cookiecutter.project_description }}"
 version = "0.0.0"
 # cf. https://www.bitecode.dev/p/relieving-your-python-packaging-pain,
 # https://devguide.python.org/versions/
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 # cf. https://pypi.org/classifiers/
 classifiers = [
     "Private :: Do Not Upload",
@@ -18,7 +19,8 @@ classifiers = [
 # To avoid unnecessary developer overhead, only set version
 # constraints to address capability, compatibility, or security
 # issues, and avoid pinning specific versions if possible.
-dependencies = []
+dependencies = [
+]
 
 [project.optional-dependencies]
 dev = [
@@ -41,8 +43,7 @@ dev = [
     "sphinxcontrib-bibtex",
     "sphinxcontrib-svg2pdfconverter[CairoSVG]",
     "sphinx-autodoc2[cli]",
-    # https://github.com/ResearchDataCom/templates/issues/11
-    "sphinx-book-theme==1.2.0",
+    "sphinx-book-theme",
     "sphinx-intl",
     "sphinx-js",
     "sphobjinv",

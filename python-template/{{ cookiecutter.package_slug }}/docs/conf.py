@@ -35,6 +35,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx_copybutton",
     "sphinx_design",
+    "sphinx_js",
     "sphinx_pyscript",
     "sphinx_tippy",
     "sphinx_togglebutton",
@@ -46,7 +47,7 @@ extensions = [
 """This documentation uses several Sphinx extensions.
 
 <inv:autodoc2:std:doc#index>
-: Generate API documentation automatically.
+: Generate Python API documentation automatically.
 
 [myst-parser](inv:myst:std:doc#index)
 : Render Markdown in documentation and docstrings.
@@ -65,6 +66,9 @@ extensions = [
 
 <inv:sphinx-design:std:doc#index>
 : Provide screen-size responsive web components.
+
+[sphinx-js](https://github.com/pyodide/sphinx-js)
+: Generate JavaScript/TypeScript API documentation automatically.
 
 <inv:sphinx-pyscript:std:doc#index>
 : Use PyScript in built documentation.
@@ -147,13 +151,21 @@ autodoc2_packages = [
     ]
     if (Path(p) / "__init__.py").exists()
 ]
-"""Search these locations for code to document."""
+"""Search these locations for Python to document."""
 
 autodoc2_render_plugin = "myst"
 """Render docstrings using [MyST Markdown](inv:myst:std:doc#index)."""
 
 autodoc2_sort_names = True
 """When documenting the API, sort by name."""
+
+js_source_path = "../src"
+"""Search these locations for JavaScript/TypeScript to document."""
+
+js_language = (
+    "typescript" if (Path("js_source_path") / "index.ts").exists() else "javascript"
+)
+"""Switch between JSDoc- and TypeDoc-formatted document."""
 
 myst_enable_extensions = [
     "amsmath",

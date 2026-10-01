@@ -5,6 +5,11 @@
             "title": "Basic",
             "description": "A minimalist collection of versioned files"
         },
+        "javascript-template": {
+            "path": "javascript-template",
+            "title": "JavaScript",
+            "description": "A JavaScript (or TypeScript) project that includes documentation and tests"
+        },
         "opentofu-template": {
             "path": "opentofu-template",
             "title": "OpenTofu",

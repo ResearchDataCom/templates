@@ -1,0 +1,1 @@
+../../python-template/{{ cookiecutter.package_slug }}/.dir-locals.el{{ cookiecutter.__destination_only }}

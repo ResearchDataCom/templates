@@ -24,15 +24,18 @@ $(if $(call pathsearch,.venv/bin,$(1)), \
 
 # Develop using the latest available supported version of Python.
 PYTHON = \
-$(call pathsearch,$(PATH),python3.15 python3.14 python3.13,exit 1; echo python3)
+$(call pathsearch,$(PATH),python3.13 python3.12 python3.11,exit 1; echo python3)
 PYTHON_VERSION = \
 $(shell $(PYTHON) -c "import sys;print('{}.{}'.format(*sys.version_info[:2]))")
 
 # Use these tools from the development environment, if available.
+FLASK       = $(call venvsearch,flask)
 PRE_COMMIT  = $(call venvsearch,pre-commit)
+PYTEST      = $(call venvsearch,pytest)
 SPHINXBUILD = $(call venvsearch,sphinx-build)
 SPHINXINTL  = $(call venvsearch,sphinx-intl)
 TOMLQ       = $(call venvsearch,tomlq)
+TWINE       = $(call venvsearch,twine)
 YQ          = $(call venvsearch,yq)
 
 # On Debian/Ubuntu, install these build dependencies via APT.
@@ -41,17 +44,20 @@ DEBIAN_BUILD_DEPS = \
 	devscripts \
 	docker.io \
 	equivs \
-	python3-pip \
+	python3.13-full \
+	sqlite3 \
+	xmlsec1 \
 
 # On Debian/Ubuntu, install these Python packages' build dependencies.
 APT_GET_INSTALL = \
 apt-get -o Debug::pkgProblemResolver=yes -y --no-install-recommends install
 DEBIAN_SOURCE_DEPS = \
 	python3-cairosvg \
+	postgresql \
 
 # On macOS, install these build dependencies via Homebrew.
 HOMEBREW_BUILD_DEPS = \
-	opentofu \
+	freetds \
 	docker-desktop \
 
 # On macOS, install these build dependencies via MacPorts.
@@ -60,26 +66,46 @@ MACPORTS_BUILD_DEPS = \
 	actionlint \
 	cairo \
 	certsync \
-	eksctl \
-	helm-4.1 \
-	kubectl-1.35 \
 	jq \
 	libffi \
 	pinact \
-	py-awscli2 \
 	py313-cairosvg \
 	shellcheck \
+	sqlite3 \
 	tflint \
-	tfupdate \
 	trivy \
+	xmlsec \
+
+# Automatically pick a web browser for final integration testing if
+# the required driver is installed.
+WEBDRIVER ?= \
+$(if $(call pathsearch,$(PATH),chromedriver),Chrome, \
+$(if $(call pathsearch,$(PATH),geckodriver),Firefox, \
+))
 
 # Get the Python egg name.  This kludge assumes package names are
 # always in kebab-case, but the Right Way requires understanding of
 # pip's or setuptools' internals.
 EGG_NAME = $(shell $(TOMLQ) -r '.project.name|split("-")|join("_")' pyproject.toml)
 
+# Set the Flask app module name, optionally from an environment
+# variable.  The default value injects a minimal test configuration to
+# make the CLI work, bypassing config.py if it exists in the current
+# working directory.  Be mindful of the different levels of string
+# escaping that might be required when setting this.
+FLASK_APP ?= '$(EGG_NAME).app:create_app({"SERVER_NAME":"localhost"})'
+
+# Recursively list code, content, and test articles (as well as
+# related work in progress).
+SOURCEISH ?= $(or $(shell git ls-tree --full-tree --name-only -r HEAD src))
+UNTRACKED ?= $(or $(shell git ls-files --others --exclude-standard src))
+
 # Prepare these translations of the documentation.
 TRANSLATIONS =
+
+# Configure Flask-Migrate to generate a database schema revision
+# automatically by default.
+FLASK_DB_REVISION_ARGS = --autogenerate -m "$(MESSAGE)"
 
 # Configure Sphinx, optionally from an environment variable.
 SPHINXOPTS ?=
@@ -100,11 +126,16 @@ $(addprefix .git/hooks/, \
 # Sort the list alphabetically.
 .PHONY: \
 	all \
+	autogenerate-revision \
 	build-deps \
 	clean \
 	clean-deps \
+	coverage \
+	dist \
+	distclean \
 	docs \
 	docsclean \
+	flask \
 	gettext \
 	html \
 	lint \
@@ -112,10 +143,13 @@ $(addprefix .git/hooks/, \
 	locales \
 	pre-commit \
 	setup \
+	smoke \
+	test \
+	tests \
 	venv \
 
 # Set the default target when running `make`.
-all: $(PRE_COMMIT_HOOKS)
+all: .coverage
 
 # Install build dependencies for local development.
 build-deps:
@@ -128,9 +162,6 @@ build-deps:
 		$(eval distro = $(or $(shell lsb_release -is))))
 	$(if $(filter Debian Ubuntu, $(distro)), \
 		sudo sed -i '/deb-src/s/^# //' /etc/apt/sources.list; \
-		sudo find /etc/apt/sources.list.d -name '*.sources' -exec \
-			sed -i '/Types: deb$$/s/$$/ deb-src/' '{}' \; \
-		; \
 		sudo apt-get update; \
 		sudo DEBIAN_FRONTEND=noninteractive \
 			apt-get install -y --no-install-recommends \
@@ -144,7 +175,8 @@ build-deps:
 		curl https://bootstrap.pypa.io/get-pip.py | python3.13 -; \
 		sudo DEBIAN_FRONTEND=noninteractive \
 			mk-build-deps -i -r -t "$(APT_GET_INSTALL)" \
-				$(DEBIAN_SOURCE_DEPS); \
+				$(DEBIAN_SOURCE_DEPS) \
+		; \
 		rm -f *.buildinfo *.changes; \
 	)
 
@@ -156,8 +188,9 @@ venv .venv:
 	touch .venv
 
 # Set up the development environment.
-setup $(EGG_NAME).egg-info: pyproject.toml .venv
+setup $(EGG_NAME).egg-info: pyproject.toml package.json .venv
 	. .venv/bin/activate; python -m pip install -e .[dev,test]
+	pnpm install
 	touch $(EGG_NAME).egg-info
 	-rm -f .egg-info
 
@@ -171,6 +204,41 @@ pre-commit: $(PRE_COMMIT_HOOKS)
 # Check code syntax and style.
 lint: $(PRE_COMMIT_HOOKS)
 	$(PRE_COMMIT) run --show-diff-on-failure --all-files
+
+# Perform comprehensive functional and integration testing.
+test tests coverage .coverage: $(EGG_NAME).egg-info $(SOURCEISH) $(UNTRACKED)
+	$(PYTEST) --cov=$(EGG_NAME) --cov-report html:cov_html \
+		$(if $(WEBDRIVER),--driver $(WEBDRIVER)) $(PYTEST_ARGS)
+
+# Run a shorter, faster subset of the test suite.
+smoke: $(EGG_NAME).egg-info
+	$(PYTEST) -m "smoke and not slow" \
+		$(if $(WEBDRIVER),--driver $(WEBDRIVER)) $(PYTEST_ARGS)
+
+# Provide a generic Flask CLI wrapper.
+flask: | $(EGG_NAME).egg-info
+	$(FLASK) -A $(FLASK_APP) $(FLASK_ARGS)
+
+# Automatically generate a new database schema revision.
+autogenerate-revision:
+	$(if $(MESSAGE),, \
+		@echo Provide a revision summary via the MESSAGE variable\; e.g.:; \
+		echo " "; \
+		echo "    make" $@ 'MESSAGE="Revised something."'; \
+		echo " "; \
+		echo The revision summary MUST be a valid PEP 257 module docstring; \
+		echo written in the same style as a commit description.; \
+		echo " "; \
+		echo Bypass this check by setting MESSAGE=1 and overriding; \
+		echo FLASK_DB_REVISION_ARGS accordingly.; \
+		exit 1; \
+	)
+	$(eval TMP := $(shell mktemp -d))
+	. .venv/bin/activate; \
+	cd $(TMP); \
+	flask -A $(FLASK_APP) db upgrade head; \
+	flask -A $(FLASK_APP) db revision $(FLASK_DB_REVISION_ARGS)
+	rm -rf $(TMP)
 
 # Route these targets to Sphinx using its "make mode" option.
 gettext html: | $(EGG_NAME).egg-info
@@ -242,13 +310,19 @@ docs: | $(EGG_NAME).egg-info
 docsclean:
 	rm -rf docs/apidocs build/{docs,gettext,html} build/versions*
 
+# Build the distribution.
+dist: | $(EGG_NAME).egg-info
+	. .venv/bin/activate; python -m build
+	$(TWINE) check dist/*
+
+distclean:
+	rm -rf dist
+
 # Remove build artifacts and reset the development environment.
-clean: docsclean
-	rm -rf build* .pytest_cache .venv* $(PRE_COMMIT_HOOKS)
+clean: docsclean distclean
+	rm -rf build* .coverage cov_* .pytest_cache .venv* $(PRE_COMMIT_HOOKS)
 	find . -type d -name __pycache__ -print | xargs rm -rf
 	find . -type d -name \*.egg-info -print | xargs rm -rf
-	find . -type d -name .external_modules -print | xargs rm -rf
-	find . -type d -name .terraform\* -print | xargs rm -rf
 
 # This could remove packages other that the ones listed, so keep any
 # confirmation prompts (requires local administrator rights).

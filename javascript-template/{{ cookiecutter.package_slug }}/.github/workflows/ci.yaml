@@ -18,21 +18,6 @@ jobs:
         with:
           access-app-id: ${{ vars.PRIVATE_REPOSITORY_ACCESS_APP_ID }}
           access-key: ${{ secrets.PRIVATE_REPOSITORY_ACCESS_KEY }}
-      - uses: ResearchDataCom/actions/python-freeze@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
-
-  test:
-    needs:
-      - lint
-    strategy:
-      matrix:
-        python-version:
-          - "3.13"
-          - "3.14"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ResearchDataCom/actions/python-test@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
-        with:
-          python-version: ${{ matrix.python-version }}
 
   release:
     # Prevent race conditions of more than one release job in case of
@@ -41,7 +26,7 @@ jobs:
       group: ${{ github.workflow }}-release-${{ github.ref_name }}
       cancel-in-progress: false
     needs:
-      - test
+      - lint
     if: github.ref == 'refs/heads/main'
     permissions:
       contents: write
@@ -53,26 +38,9 @@ jobs:
       released: ${{ steps.release.outputs.released }}
       tag: ${{ steps.release.outputs.tag }}
 
-  build:
-    needs:
-      - release
-    if: needs.release.outputs.released
-    strategy:
-      matrix:
-        python-version:
-          - "3.13"
-          - "3.14"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ResearchDataCom/actions/python-build@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
-        with:
-          artifact-name: python-${{ matrix.python-version }}-build-artifacts
-          python-version: ${{ matrix.python-version }}
-
   github:
     needs:
       - release
-      - build
     if: needs.release.outputs.released
     permissions:
       contents: write
@@ -80,7 +48,7 @@ jobs:
     steps:
       - uses: ResearchDataCom/actions/publish-github@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
         with:
-          artifact-paths: requirements.txt,dist/*
+          artifact-paths: ""
           tag: ${{ needs.release.outputs.tag }}
 
   docs:

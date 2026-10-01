@@ -14,7 +14,7 @@ submitting them for review as a
 
 This project **REQUIRES** [Git](https://git-scm.com/),
 [GNU Make](https://www.gnu.org/software/make/), and
-[Python](https://www.python.org/) 3.12 or later.
+[Python](https://www.python.org/) 3.13 or later.
 
 :::
 

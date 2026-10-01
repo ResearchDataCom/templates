@@ -9,7 +9,7 @@ description = "{{ cookiecutter.project_description }}"
 version = "0.0.0"
 # cf. https://www.bitecode.dev/p/relieving-your-python-packaging-pain,
 # https://devguide.python.org/versions/
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 # cf. https://pypi.org/classifiers/
 classifiers = [
     "Private :: Do Not Upload",
@@ -46,6 +46,7 @@ dev = [
     # https://github.com/ResearchDataCom/templates/issues/11
     "sphinx-book-theme==1.2.0",
     "sphinx-intl",
+    "sphinx-js",
     "sphobjinv",
     "twine",
     "yapf",
