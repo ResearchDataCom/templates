@@ -1,9 +1,9 @@
-<!---
+<!--
 
 This work is marked CC0 1.0 Universal.  To view a copy of this mark,
 visit https://creativecommons.org/publicdomain/zero/1.0/.
 
---->
+-->
 
 # RDCT Templates Library
 
@@ -17,13 +17,16 @@ greater detail.  For example:
 cookiecutter gh:ResearchDataCom/templates
 ```
 
-Select the desired template.  Provide both a project slug, which
-**MUST** be in [snake_case](https://en.wikipedia.org/wiki/Snake_case),
-and a one-sentence project description.  The other settings derive
-their default values from the project slug, but developers **MAY**
-tailor those values as needed.  This creates a directory named after
-the package slug, which **MAY** default to the project slug converted
-to [kebab-case](https://en.wikipedia.org/wiki/Kebab_case) depending on
-the template.
+> [!IMPORTANT]
+>
+> The project slug **MUST** be in
+> [snake_case](https://en.wikipedia.org/wiki/Snake_case), and the
+> project description **MUST** be one complete sentence.  The project
+> slug seeds the default values of the other settings, which
+> developers **MAY** tailor as needed.  Cookiecutter creates a
+> directory named after the package slug, which **SHOULD** default to
+> the project slug converted to
+> [kebab-case](https://en.wikipedia.org/wiki/Kebab_case) depending on
+> the template.
 
 [![This video shows a typical cookiecutter run, which creates a Python project](demo.gif)](demo.tape)
