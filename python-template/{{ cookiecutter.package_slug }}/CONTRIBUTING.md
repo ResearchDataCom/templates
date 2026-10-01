@@ -13,13 +13,17 @@ documentation) on the latest HEAD of the main branch before submitting
 them for review as a
 [GitHub pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests).
 
-For Python code changes, the commit scope specifies the second-level
-Python module name of the code instigating the change.  It does not
-include the module's top-level prefix or any suffixes.  Functional or
-unit test changes reference the scope of the code being exercised;
-likewise for module-specific documentation.  Omit the commit scope
-when describing changes to integration tests, to code in second-level
-[dunder](https://wiki.python.org/moin/DunderAlias) modules, or to
-general project documentation.
+For code changes, the commit scope specifies the second-level module
+name of the code instigating the change.  It does not include the
+module's top-level prefix or any suffixes.  Functional or unit test
+changes reference the scope of the code being exercised; likewise for
+module-specific documentation.  For Ansible collection or OpenTofu
+resource definition changes, commit scopes specify the Ansible role or
+the OpenTofu submodule containing the code instigating the change, not
+changes instigated by code in top-level files like `sites.yml` or
+`main.tf`.  Omit the commit scope when describing changes to
+integration tests, to code in second-level
+[dunder](https://wiki.python.org/moin/DunderAlias) modules or similar
+indices, or to general project documentation.
 
 ### [Refer to the detailed contribution guidelines for more information.]({{ cookiecutter.docs_url }}/)
