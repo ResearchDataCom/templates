@@ -46,6 +46,7 @@ dev = [
     # https://github.com/ResearchDataCom/templates/issues/11
     "sphinx-book-theme==1.2.0",
     "sphinx-intl",
+    "sphinx-js",
     "sphobjinv",
     "twine",
     "yapf",
