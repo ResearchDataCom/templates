@@ -35,7 +35,6 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx_copybutton",
     "sphinx_design",
-    "sphinx_js",
     "sphinx_pyscript",
     "sphinx_tippy",
     "sphinx_togglebutton",
@@ -43,7 +42,7 @@ extensions = [
     "sphinxcontrib.cairosvgconverter",
     "sphinxext.opengraph",
     "sphinxext.rediraffe",
-]
+] + (["sphinx_js"] if (Path(__file__).parent / ".." / "package.json").exists() else [])
 """This documentation uses several Sphinx extensions.
 
 <inv:autodoc2:std:doc#index>
@@ -159,7 +158,7 @@ autodoc2_render_plugin = "myst"
 autodoc2_sort_names = True
 """When documenting the API, sort by name."""
 
-js_source_path = "../src"
+js_source_path = str((Path(__file__).parent / ".." / "src").absolute())
 """Search these locations for JavaScript/TypeScript to document."""
 
 js_language = (
