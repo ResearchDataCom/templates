@@ -1,3 +1,21 @@
+## v2.1.0 (2026-10-05)
+
+### Bug Fixes
+
+- **python-template**: load sphinx-js only upon detection of a Node.js project definition
+- update Python to v3.13
+
+### New Features
+
+- guide developers toward including SVG diagrams instead of bitmaps in documentation
+- **python-template**: generate JavaScript/TypeScript API documentation automatically
+- **javascript-template**: define a Node.js project with documentation and related placeholders
+
+### Refactoring
+
+- keep the template list sorted alphabetically to preserve readability
+- harmonize top-level contribution guidelines
+
 ## v2.0.1 (2026-09-17)
 
 ### Bug Fixes
