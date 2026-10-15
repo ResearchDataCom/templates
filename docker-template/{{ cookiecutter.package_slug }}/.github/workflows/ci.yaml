@@ -1,0 +1,96 @@
+---
+name: Continuous Integration
+
+# Trigger this workflow manually, by pushing commits to any branch, by
+# filing a pull request.
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+defaults:
+  run:
+    shell: bash -Eeuo pipefail -x {0}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ResearchDataCom/actions/pre-commit@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
+        with:
+          access-app-id: ${{ vars.PRIVATE_REPOSITORY_ACCESS_APP_ID }}
+          access-key: ${{ secrets.PRIVATE_REPOSITORY_ACCESS_KEY }}
+          owner: ${{ vars.PRIVATE_REPOSITORY_OWNER || github.repository_owner }}
+
+  generate-jobs:
+    needs:
+      - lint
+    runs-on: ubuntu-latest
+    env:
+      BASHBREW_NAMESPACE: ghcr.io/researchdatacom
+    steps:
+      - name: Generate Docker container image build jobs.
+        id: generate-jobs
+        uses: ResearchDataCom/actions/bashbrew-jobs@3462a1a8169af170f9b7b976e96996b811da438e # v4.0.0
+    outputs:
+      strategy: ${{ steps.generate-jobs.outputs.strategy }}
+
+  test-matrix:
+    needs:
+      - generate-jobs
+    strategy: ${{ fromJSON(needs.generate-jobs.outputs.strategy) }}
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Hack in support for hardware emulation via QEMU (only works on linux/amd64).
+        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - name: Build and test the container image.
+        uses: ResearchDataCom/actions/bashbrew-build@9415e2ac3aa71d3e524202d4cdd7d4359458ed24 # v4.0.0
+        with:
+          prepare: ${{ matrix.runs.prepare }}
+          pull: ${{ matrix.runs.pull }}
+          build: ${{ matrix.runs.build }}
+          history: ${{ matrix.runs.history }}
+          test: ${{ matrix.runs.test }}
+          images: ${{ matrix.runs.images }}
+          access-app-id: ${{ vars.PRIVATE_REPOSITORY_ACCESS_APP_ID }}
+          access-key: ${{ secrets.PRIVATE_REPOSITORY_ACCESS_KEY }}
+          owner: ${{ vars.PRIVATE_REPOSITORY_OWNER || github.repository_owner }}
+      - name: Log into the GitHub Container Registry.
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload the container image to the GitHub Container Registry.
+        run: docker image push --all-tags ghcr.io/${GITHUB_REPOSITORY,,}
+
+  docs:
+    needs:
+      - release
+    if: needs.release.outputs.released
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ResearchDataCom/actions/sphinx-build@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
+        with:
+          requirements: null
+
+  ghpages:
+    needs:
+      - release
+      - docs
+    if: needs.release.outputs.released
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ResearchDataCom/actions/publish-ghpages@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0

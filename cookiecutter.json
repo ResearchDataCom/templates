@@ -5,6 +5,11 @@
             "title": "Basic",
             "description": "A minimalist collection of versioned files"
         },
+        "docker-template": {
+            "path": "docker-template",
+            "title": "Docker",
+            "description": "A Docker image template supporting building containers to Docker Official Images standards"
+        },
         "javascript-template": {
             "path": "javascript-template",
             "title": "JavaScript",

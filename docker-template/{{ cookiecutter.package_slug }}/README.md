@@ -1,0 +1,1 @@
+../../python-template/{{ cookiecutter.package_slug }}/README.md
