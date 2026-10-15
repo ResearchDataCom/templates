@@ -1,5 +1,4 @@
-{% raw %}
-set -Eeuo pipefail
+{% raw %}set -Eeuo pipefail
 
 
 # Allow "$XYZ_PASSWORD_FILE" to fill in the value of "$XYZ_PASSWORD"

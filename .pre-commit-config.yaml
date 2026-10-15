@@ -21,7 +21,7 @@ repos:
     rev: 99470f5e12208ff0fb17ab81c3c494f7620a1d8d  # frozen: v0.11.0
     hooks:
       - id: shellcheck
-        args: ["--severity=warning"]
+        args: ["--severity=warning", "--exclude=SC1054,SC1056,SC1072,SC1073,SC1083"]
 
   # Check GitHub Actions workflows.
   - repo: https://github.com/rhysd/actionlint

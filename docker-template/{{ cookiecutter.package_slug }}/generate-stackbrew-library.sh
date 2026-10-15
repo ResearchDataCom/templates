@@ -11,12 +11,12 @@ shopt -s nullglob
 declare -A aliases=(
 #    [1.0]='1'
 )
-
+{% raw %}
 if [ ${#aliases[@]} -eq 0 ]; then
     echo "Provide aliases for your docker container tags"
     exit 1
 fi
-
+{% endraw %}
 # Explicitly operate in same directory as this script.
 cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 self="$(basename "${BASH_SOURCE[0]}")"

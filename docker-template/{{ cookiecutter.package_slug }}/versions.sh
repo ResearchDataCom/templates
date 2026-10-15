@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck disable=all
 if ((BASH_VERSINFO[0] < 3))
 then
   echo "This script requires Bash version 3 or newer."
