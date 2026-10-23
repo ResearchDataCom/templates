@@ -73,24 +73,3 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload the container image to the GitHub Container Registry.
         run: docker image push --all-tags ghcr.io/${GITHUB_REPOSITORY,,}
-
-  docs:
-    needs:
-      - release
-    if: needs.release.outputs.released
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ResearchDataCom/actions/sphinx-build@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
-        with:
-          requirements: null
-
-  ghpages:
-    needs:
-      - release
-      - docs
-    if: needs.release.outputs.released
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ResearchDataCom/actions/publish-ghpages@c8de3159ea271cafcebcd6c3414a64d4b9a26c78 # v4.0.0
