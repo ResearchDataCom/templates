@@ -51,8 +51,6 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Hack in support for hardware emulation via QEMU (only works on linux/amd64).
-        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
       - name: Build and test the container image.
         uses: ResearchDataCom/actions/bashbrew-build@9415e2ac3aa71d3e524202d4cdd7d4359458ed24 # v4.0.0
         with:
