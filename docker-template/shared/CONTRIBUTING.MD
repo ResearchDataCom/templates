@@ -1,0 +1,1 @@
+../../basic-template/{{ cookiecutter.package_slug }}/CONTRIBUTING.md

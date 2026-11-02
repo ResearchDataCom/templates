@@ -1,0 +1,1 @@
+../../shared/apply-templates.sh

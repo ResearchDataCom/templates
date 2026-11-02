@@ -1,0 +1,1 @@
+../../shared/CONTRIBUTING.MD

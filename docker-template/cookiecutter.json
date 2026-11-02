@@ -1,0 +1,14 @@
+{
+    "templates": {
+        "docker-python-template": {
+            "path": "docker-python-template",
+            "title": "Python",
+            "description": "A basic python template for creating Docker containers"
+        },
+        "docker-php-template": {
+            "path": "docker-php-template",
+            "title": "PHP",
+            "description": "A basic PHP template for creating Docker containers"
+        }
+    }
+}
