@@ -12,6 +12,7 @@ repos:
     rev: 55d62f82df48e68346132837311d6103617a4e69  # frozen: v4.16.5
     hooks:
       - id: commitizen
+        stages: [commit-msg]
 
   # Check shell scripts, limiting output to errors and warnings.
   - repo: https://github.com/koalaman/shellcheck-precommit
@@ -34,3 +35,19 @@ repos:
         language: unsupported
         entry: pinact run -u --min-age 7
         pass_filenames: false
+
+  # Make sure the templates and the image definitions match.
+  - repo: local
+    hooks:
+      - id: apply-templates
+        name: Apply templates.
+        language: unsupported
+        entry: ./apply-templates.sh
+        pass_filenames: false
+        stages: [pre-commit]
+
+  # Check container definitions.
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.14.0
+    hooks:
+      - id: hadolint-docker

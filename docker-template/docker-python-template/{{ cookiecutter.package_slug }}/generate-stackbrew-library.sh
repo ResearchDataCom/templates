@@ -1,0 +1,1 @@
+../../shared/generate-stackbrew-library.sh

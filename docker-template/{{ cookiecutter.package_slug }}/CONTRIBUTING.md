@@ -1,1 +1,0 @@
-../../python-template/{{ cookiecutter.package_slug }}//CONTRIBUTING.md
